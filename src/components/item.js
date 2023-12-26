@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { memo, useState } from 'react';
-import { remove, update } from '../lib/reducer';
+import { removeItem, updateItem } from '../lib/items';
 
-const Item = ({ item, dispatch }) => {
+const Item = ({ item, setItems }) => {
   const [editing, setEditing] = useState(false);
 
   return (
@@ -12,7 +12,11 @@ const Item = ({ item, dispatch }) => {
         className="focus:bg-red-500"
         checked={item.packed}
         id={`toggle-${item.id}`}
-        onChange={() => dispatch(update(item.id, { packed: !item.packed }))}
+        onChange={(e) =>
+          setItems((items) =>
+            updateItem(items, item.id, { packed: !item.packed }),
+          )
+        }
       />
       <label
         htmlFor={`toggle-${item.id}`}
@@ -25,7 +29,9 @@ const Item = ({ item, dispatch }) => {
         id={`edit-${item.id}`}
         className={clsx('py-0 text-sm', { hidden: !editing })}
         onChange={(event) =>
-          dispatch(update(item.id, { name: event.target.value }))
+          setItems((items) =>
+            updateItem(items, item.id, { name: event.target.value }),
+          )
         }
       />
       <div className="flex gap-2">
@@ -39,7 +45,7 @@ const Item = ({ item, dispatch }) => {
         <button
           className="px-2 py-0 text-xs"
           aria-label={`Remove "${item.name}"`}
-          onClick={() => dispatch(remove(item.id))}
+          onClick={() => setItems((items) => removeItem(items, item.id))}
         >
           🗑 Remove
         </button>
