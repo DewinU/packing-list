@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import {
   createItem,
   filterItems,
@@ -10,50 +10,68 @@ import Header from './header';
 import ItemList from './item-list';
 import MarkAllAsUnpacked from './mark-all-as-unpacked';
 import NewItem from './new-item';
+import { reducer } from '../lib/reducer';
 
 const Application = () => {
-  const [items, setItems] = useState(getInitialItems());
+  // const [items, setItems] = useState(getInitialItems());
+  const [items, dispatch] = useReducer(reducer, getInitialItems());
   // const [newItemName, setNewItemName] = useState('');
 
-  const add = (name) => {
-    const item = createItem(name);
-    setItems([...items, item]);
-  };
+  const [nothing, setNothing] = useState(false);
 
-  const update = (id, updates) => {
-    setItems(updateItem(items, id, updates));
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setNothing(true);
+      console.log(nothing);
+    }, 5000);
+  }, [nothing]);
 
-  const remove = (id) => {
-    setItems(removeItem(items, id));
-  };
+  // const add = useCallback(
+  //   (name) => {
+  //     const item = createItem(name);
+  //     setItems([...items, item]);
+  //   },
+  //   [items],
+  // );
+
+  // const update = useCallback(
+  //   (id, updates) => {
+  //     setItems(updateItem(items, id, updates));
+  //   },
+  //   [items],
+  // );
+
+  // const remove = useCallback(
+  //   (id) => {
+  //     setItems(removeItem(items, id));
+  //   },
+  //   [items],
+  // );
 
   const unpackedItems = filterItems(items, { packed: false });
   const packedItems = filterItems(items, { packed: true });
 
-  const markAllAsUnpacked = () => {
-    return setItems(items.map((item) => ({ ...item, packed: false })));
-  };
+  // const markAllAsUnpacked = useCallback(() => {
+  //   return setItems(items.map((item) => ({ ...item, packed: false })));
+  // }, [items]);
 
   return (
     <main className="mx-auto flex flex-col gap-8 p-8 lg:max-w-4xl">
       <Header items={items} />
-      <NewItem addItem={add} />
+      <NewItem dispatch={dispatch} />
       <section className="flex flex-col gap-8 md:flex-row">
         <ItemList
           title="Unpacked Items"
           items={unpackedItems}
-          update={update}
-          remove={remove}
+          dispatch={dispatch}
         />
         <ItemList
           title="Packed Items"
           items={packedItems}
-          update={update}
-          remove={remove}
+          dispatch={dispatch}
         />
       </section>
-      <MarkAllAsUnpacked onClick={markAllAsUnpacked} />
+      <MarkAllAsUnpacked dispatch={dispatch} />
     </main>
   );
 };

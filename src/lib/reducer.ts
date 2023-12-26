@@ -8,6 +8,7 @@ export const add = createAction('items/add', (name: string) => ({
 export const update = createAction(
   'items/update',
   (id: string, properties: Partial<Item>) => {
+    console.log('update', id, properties);
     return { payload: { id, ...properties } };
   },
 );
