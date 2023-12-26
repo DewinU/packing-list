@@ -13,7 +13,7 @@ import NewItem from './new-item';
 
 const Application = () => {
   const [items, setItems] = useState(getInitialItems());
-  const [newItemName, setNewItemName] = useState('');
+  // const [newItemName, setNewItemName] = useState('');
 
   const add = (name) => {
     const item = createItem(name);
@@ -36,13 +36,9 @@ const Application = () => {
   };
 
   return (
-    <main className="flex flex-col gap-8 p-8 mx-auto lg:max-w-4xl">
+    <main className="mx-auto flex flex-col gap-8 p-8 lg:max-w-4xl">
       <Header items={items} />
-      <NewItem
-        newItemName={newItemName}
-        setNewItemName={setNewItemName}
-        addItem={add}
-      />
+      <NewItem addItem={add} />
       <section className="flex flex-col gap-8 md:flex-row">
         <ItemList
           title="Unpacked Items"
