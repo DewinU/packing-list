@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { filterItems, getInitialItems } from '../lib/items';
 import Header from './header';
 import ItemList from './item-list';
 import MarkAllAsUnpacked from './mark-all-as-unpacked';
 import NewItem from './new-item';
+import { reducer } from '../lib/reducer';
 
 const Application = () => {
-  const [items, setItems] = useState(() => getInitialItems());
+  const [items, dispatch] = useReducer(reducer, getInitialItems());
   // const [newItemName, setNewItemName] = useState('');
 
   const [nothing, setNothing] = useState(false);
@@ -50,20 +51,22 @@ const Application = () => {
   return (
     <main className="mx-auto flex flex-col gap-8 p-8 lg:max-w-4xl">
       <Header items={items} />
-      <NewItem />
+      <NewItem dispatch={dispatch} />
       <section className="flex flex-col gap-8 md:flex-row">
         <ItemList
           title="Unpacked Items"
           items={unpackedItems}
-          setItems={setItems}
+          // setItems={setItems}
+          dispatch={dispatch}
         />
         <ItemList
           title="Packed Items"
           items={packedItems}
-          setItems={setItems}
+          // setItems={setItems}
+          dispatch={dispatch}
         />
       </section>
-      <MarkAllAsUnpacked setItems={setItems} />
+      <MarkAllAsUnpacked dispatch={dispatch} />
     </main>
   );
 };

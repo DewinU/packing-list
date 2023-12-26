@@ -64,6 +64,7 @@ export const filterItems = (
   items: Item[] = [],
   properties: Readonly<Partial<Item>>,
 ) => {
+  console.log('filterItems');
   return items.filter((item) => {
     for (const [filterKey, filterValue] of Object.entries(properties)) {
       if (filterKey === 'name' && typeof filterValue === 'string') {
@@ -74,6 +75,7 @@ export const filterItems = (
         return item.packed === filterValue;
       }
     }
+
     return false;
   });
 };
