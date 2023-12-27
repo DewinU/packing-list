@@ -1,8 +1,10 @@
-import { memo, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { add } from '../lib/reducer';
+import { ItemsContext } from '../context';
 
-const NewItem = ({ dispatch }) => {
+const NewItem = () => {
   const [newItemName, setNewItemName] = useState('');
+  const { dispatch } = useContext(ItemsContext);
   return (
     <form
       id="new-item"
