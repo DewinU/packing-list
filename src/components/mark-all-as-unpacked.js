@@ -1,9 +1,9 @@
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { markAllAsUnpacked } from '../lib/reducer';
-import { ItemsContext } from '../context';
+import { useActions } from '../hooks';
 
 const MarkAllAsUnpacked = () => {
-  const { dispatch } = useContext(ItemsContext);
+  const dispatch = useActions();
 
   return (
     <div className="mb-16">
