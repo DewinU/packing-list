@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import { filterItems } from '../lib/items';
 import { toKebabCase } from '../lib/kebab-case';
 import Item from './item';
+import { useItems } from '../hooks';
 
 const EmptyState = ({ id, items, filteredItems }) => (
   <p id={id} className="text-primary-400">
@@ -9,12 +10,19 @@ const EmptyState = ({ id, items, filteredItems }) => (
   </p>
 );
 
-const ItemList = ({ title = 'Items', items }) => {
+const ItemList = ({ title = 'Items' }) => {
+  const items = useItems();
   const [filter, setFilter] = useState('');
   const id = toKebabCase(title);
 
-  const filteredItems = filterItems(items, { name: filter });
-  const isEmpty = !items.length;
+  let filteredItems = items;
+
+  title.includes('Unpacked')
+    ? (filteredItems = filterItems(filteredItems, { packed: false }))
+    : (filteredItems = filterItems(filteredItems, { packed: true }));
+
+  const searchItems = filterItems(filteredItems, { name: filter });
+  const isEmpty = !filteredItems.length;
 
   return (
     <section id={id} className="w-full border-2 border-primary-200 p-4">
@@ -30,15 +38,15 @@ const ItemList = ({ title = 'Items', items }) => {
         />
       </header>
       <ul className="flex flex-col gap-2">
-        {filteredItems.map((item) => (
+        {searchItems.map((item) => (
           <Item key={item.id} item={item} />
         ))}
       </ul>
       {isEmpty && (
         <EmptyState
           id={`${id}-empty-state`}
-          items={items}
-          filteredItems={filteredItems}
+          items={filteredItems}
+          filteredItems={searchItems}
         />
       )}
     </section>
