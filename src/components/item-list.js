@@ -22,7 +22,7 @@ const ItemList = ({ title = 'Items' }) => {
     : (filteredItems = filterItems(filteredItems, { packed: true }));
 
   const searchItems = filterItems(filteredItems, { name: filter });
-  const isEmpty = !filteredItems.length;
+  const isEmpty = !searchItems.length;
 
   return (
     <section id={id} className="w-full border-2 border-primary-200 p-4">

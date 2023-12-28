@@ -4,6 +4,7 @@ import { reducer } from './lib/reducer';
 
 export const ItemsContext = createContext({});
 export const ActionContext = createContext({});
+export const ItemCountContext = createContext({});
 
 const ItemsProvider = ({ children }) => {
   const [items, dispatch] = useReducer(reducer, getInitialItems());
@@ -11,7 +12,9 @@ const ItemsProvider = ({ children }) => {
   return (
     <ItemsContext.Provider value={items}>
       <ActionContext.Provider value={dispatch}>
-        {children}
+        <ItemCountContext.Provider value={items.length}>
+          {children}
+        </ItemCountContext.Provider>
       </ActionContext.Provider>
     </ItemsContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ActionContext, ItemsContext } from './context';
+import { ActionContext, ItemCountContext, ItemsContext } from './context';
 
 export const useItems = () => {
   const items = useContext(ItemsContext);
@@ -9,4 +9,9 @@ export const useItems = () => {
 export const useActions = () => {
   const dispatch = useContext(ActionContext);
   return dispatch;
+};
+
+export const useItemCount = () => {
+  const itemCount = useContext(ItemCountContext);
+  return itemCount;
 };
